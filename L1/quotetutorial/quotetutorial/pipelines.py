@@ -18,7 +18,7 @@ class TextPipeline(object):
         if item['text']:
             if len(item['text']) > self.limit:
                 item['text'] =  item['text'][0:self.limit].rstrip() + '...'
-                return item
+            return item
         else:
             return DropItem('Text Error %s' % item)
 
