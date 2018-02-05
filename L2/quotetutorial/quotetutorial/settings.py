@@ -49,10 +49,10 @@ DEFAULT_REQUEST_HEADERS = {
 
 # Enable or disable spider middlewares
 # See http://scrapy.readthedocs.org/en/latest/topics/spider-middleware.html
-#SPIDER_MIDDLEWARES = {
+SPIDER_MIDDLEWARES = {
    'quotetutorial.middlewares.QuotetutorialSpiderMiddleware': 543,
    'scrapy.downloadermiddlewares.retry.RetryMiddleware': None,
-#}
+}
 
 # Enable or disable downloader middlewares
 # See http://scrapy.readthedocs.org/en/latest/topics/downloader-middleware.html
