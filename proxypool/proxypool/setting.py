@@ -28,8 +28,8 @@ GETTER_CYCLE = 300
 TEST_URL = 'http://www.baidu.com'
 
 # API配置
-API_HOST = '0.0.0.0'
-API_PORT = 5555
+API_HOST = 'localhost'
+API_PORT = 5000
 
 # 开关
 TESTER_ENABLED = True

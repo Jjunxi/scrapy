@@ -19,7 +19,7 @@ NEWSPIDER_MODULE = 'zhihuuser.spiders'
 #USER_AGENT = 'zhihuuser (+http://www.yourdomain.com)'
 
 # Obey robots.txt rules
-ROBOTSTXT_OBEY = True
+ROBOTSTXT_OBEY = False
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
 #CONCURRENT_REQUESTS = 32
@@ -42,8 +42,8 @@ ROBOTSTXT_OBEY = True
 DEFAULT_REQUEST_HEADERS = {
   'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
   'Accept-Language': 'en',
-#   'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36',
-  'authorization': 'oauth c3cef7c66a1843f8b3a9e6a1e3160e20',
+  # 'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36',
+  'authorization': 'oauth c3cef7c66a1843f8b3a9e6a1e3160e20'
 }
 
 # Enable or disable spider middlewares
@@ -56,7 +56,8 @@ DEFAULT_REQUEST_HEADERS = {
 # See http://scrapy.readthedocs.org/en/latest/topics/downloader-middleware.html
 DOWNLOADER_MIDDLEWARES = {
    'scrapy.downloadermiddlewares.useragent.UserAgentMiddleware': None,
-   'zhihuuser.middlewares.RandomUserAgentMiddleware': 400,
+   'zhihuuser.middlewares.RandomUserAgentMiddleware': 300,
+   'zhihuuser.middlewares.ProxyMiddleware': 400,
 }
 
 # Enable or disable extensions
@@ -91,6 +92,9 @@ ITEM_PIPELINES = {
 #HTTPCACHE_DIR = 'httpcache'
 #HTTPCACHE_IGNORE_HTTP_CODES = []
 #HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
+
+REDIRECT_ENABLED = False
+COOKIES_ENABLED = False
 
 MONGO_URI = 'localhost'
 MONGO_DATABASE = 'zhihu'

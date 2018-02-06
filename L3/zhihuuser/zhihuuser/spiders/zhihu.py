@@ -27,11 +27,14 @@ class ZhihuSpider(Spider):
                                                 include=self.follwer_query,
                                                 offset=0,
                                                 limit=20)
-        yield Request(follower_url, callback=self.parse_follower)
+        yield Request(follower_url, callback=self.parse_follower, dont_filter=True)
 
 
     def parse_user(self, response):
         # print(response.text)
+        if response.status != 200:
+            return
+
         result = json.loads(response.text)
         item = UserItem()
         for field in item.fields:
@@ -43,19 +46,23 @@ class ZhihuSpider(Spider):
                                                include=self.follwer_query,
                                                limit=20,
                                                offset=0),
-                      callback=self.parse_follower)
+                      callback=self.parse_follower,
+                      dont_filter=True)
             
 
     def parse_follower(self, response):
+        if response.status != 200:
+            return
+            
         results = json.loads(response.text)
         if 'data' in results.keys():
             for result in results.get('data'):
                 user_url = self.user_url.format(user=result.get('url_token'), 
                                         include=self.user_query)
-                yield Request(user_url, callback=self.parse_user)
+                yield Request(user_url, callback=self.parse_user, dont_filter=True)
         
         if 'paging' in results.keys() and results.get('paging').get('is_end') == False:
             next_page = results.get('paging').get('next')
-            yield Request(next_page, self.parse_follower)
+            yield Request(next_page, self.parse_follower, dont_filter=True)
             
             

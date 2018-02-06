@@ -8,6 +8,7 @@
 from scrapy import signals
 import random
 from scrapy.downloadermiddlewares.useragent import UserAgentMiddleware
+import requests
 
 class ZhihuuserSpiderMiddleware(object):
     # Not all methods need to be defined. If a method is not defined,
@@ -71,4 +72,48 @@ class RandomUserAgentMiddleware(UserAgentMiddleware):
     def process_request(self, request, spider):
         agent = random.choice(self.user_agent)
         request.headers['User-Agent'] = agent
-        return None 
+        print(agent)
+        # return None 
+
+
+class ProxyMiddleware(object):
+    
+    def __init__(self):
+        self.proxy_url = 'http://localhost:5000/random'
+        self.proxy_in_use = False
+        self.change_proxy = False
+        self.proxy = self.get_proxy()
+
+    def get_proxy(self):
+        try:
+            response = requests.get(self.proxy_url)
+            if response.status_code == 200:
+                print(response.text)
+                return response.text
+            return None
+        except expression as identifier:
+            return None
+
+    def process_request(self, request, spider):
+        if not self.proxy_in_use:
+            return None
+
+        if not self.change_proxy:
+            request.meta['proxy'] = self.proxy
+            return None
+        else:
+            self.proxy = self.get_proxy()
+            self.change_proxy = False
+            return request
+
+
+    def process_response(self, request, response, spider):
+        if response.status == 302:
+            if not self.proxy_in_use:
+                self.proxy_in_use = True
+            else:
+                self.change_proxy = True
+            return request
+        else:
+            return response
+            
