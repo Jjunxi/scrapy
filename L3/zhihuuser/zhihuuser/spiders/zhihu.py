@@ -21,7 +21,7 @@ class ZhihuSpider(Spider):
     def start_requests(self):
         user_url = self.user_url.format(user=self.start_user, 
                                         include=self.user_query)
-        yield Request(user_url, callback=self.parse_user)
+        yield Request(user_url, callback=self.parse_user, dont_filter=True)
 
         follower_url = self.follower_url.format(user=self.start_user, 
                                                 include=self.follwer_query,
@@ -31,10 +31,6 @@ class ZhihuSpider(Spider):
 
 
     def parse_user(self, response):
-        # print(response.text)
-        if response.status != 200:
-            return
-
         result = json.loads(response.text)
         item = UserItem()
         for field in item.fields:
@@ -50,10 +46,7 @@ class ZhihuSpider(Spider):
                       dont_filter=True)
             
 
-    def parse_follower(self, response):
-        if response.status != 200:
-            return
-            
+    def parse_follower(self, response):  
         results = json.loads(response.text)
         if 'data' in results.keys():
             for result in results.get('data'):

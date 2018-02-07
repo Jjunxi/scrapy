@@ -33,7 +33,7 @@ ROBOTSTXT_OBEY = False
 #CONCURRENT_REQUESTS_PER_IP = 16
 
 # Disable cookies (enabled by default)
-#COOKIES_ENABLED = False
+COOKIES_ENABLED = False
 
 # Disable Telnet Console (enabled by default)
 #TELNETCONSOLE_ENABLED = False
@@ -56,8 +56,8 @@ DEFAULT_REQUEST_HEADERS = {
 # See http://scrapy.readthedocs.org/en/latest/topics/downloader-middleware.html
 DOWNLOADER_MIDDLEWARES = {
    'scrapy.downloadermiddlewares.useragent.UserAgentMiddleware': None,
-   'zhihuuser.middlewares.RandomUserAgentMiddleware': 300,
-   'zhihuuser.middlewares.ProxyMiddleware': 400,
+   'zhihuuser.middlewares.RandomUserAgentMiddleware': 500,
+   'zhihuuser.middlewares.ProxyMiddleware': 400
 }
 
 # Enable or disable extensions
@@ -94,7 +94,7 @@ ITEM_PIPELINES = {
 #HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
 
 REDIRECT_ENABLED = False
-COOKIES_ENABLED = False
+# DOWNLOAD_TIMEOUT = 10
 
 MONGO_URI = 'localhost'
 MONGO_DATABASE = 'zhihu'

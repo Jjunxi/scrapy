@@ -83,12 +83,13 @@ class ProxyMiddleware(object):
         self.proxy_in_use = False
         self.change_proxy = False
         self.proxy = self.get_proxy()
+        self.count = 0
 
     def get_proxy(self):
         try:
             response = requests.get(self.proxy_url)
             if response.status_code == 200:
-                print(response.text)
+                # print(response.text)
                 return response.text
             return None
         except expression as identifier:
@@ -100,6 +101,7 @@ class ProxyMiddleware(object):
 
         if not self.change_proxy:
             request.meta['proxy'] = self.proxy
+            print(self.proxy)
             return None
         else:
             self.proxy = self.get_proxy()
@@ -108,12 +110,20 @@ class ProxyMiddleware(object):
 
 
     def process_response(self, request, response, spider):
-        if response.status == 302:
-            if not self.proxy_in_use:
-                self.proxy_in_use = True
-            else:
-                self.change_proxy = True
-            return request
-        else:
+        if response.status == 200:
             return response
-            
+        else: #302, 403, 301
+            if self.count < 3:
+                self.count += 1
+            else:
+                self.count = 0
+                if not self.proxy_in_use:
+                    self.proxy_in_use = True
+                else:
+                    self.change_proxy = True
+            return request
+
+    def process_spider_exception(self, request, exception, spider):
+        return request
+
+
